@@ -1,0 +1,49 @@
+/*
+File: taskBuilder.codextension
+Description: Contains the implementation of the intuitive task builder feature in AutoFlow.
+*/
+
+class TaskBuilder {
+    constructor() {
+        this.actions = [];
+    }
+
+    // Method to add a new action to the workflow
+    addAction(action) {
+        this.actions.push(action);
+    }
+
+    // Method to remove an action from the workflow
+    removeAction(index) {
+        this.actions.splice(index, 1);
+    }
+
+    // Method to generate the final automation script based on the added actions
+    generateScript() {
+        let script = "";
+
+        for (let action of this.actions) {
+            switch (action.type) {
+                case 'keyboardInput':
+                    script += `SendInput, ${action.value}\n`;
+                    break;
+                case 'mouseClick':
+                    script += `Click, ${action.position.x}, ${action.position.y}\n`;
+                    break;
+                // Add more cases for different types of actions
+            }
+        }
+
+        return script;
+    }
+}
+
+// Example usage
+const taskBuilder = new TaskBuilder();
+
+// Adding actions to the workflow
+taskBuilder.addAction({ type: 'keyboardInput', value: 'Hello, World!' });
+taskBuilder.addAction({ type: 'mouseClick', position: { x: 100, y: 200 } });
+
+// Generating the final script
+const finalScript = taskBuilder.generateScript();
